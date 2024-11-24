@@ -133,5 +133,8 @@
         <Reference Include="MagicaClothV2">
             <HintPath>../../Managed/MagicaClothV2.dll</HintPath>
         </Reference>
+        <Reference Include="UnityEngine.ParticleSystemModule">
+            <HintPath>../../Managed/UnityEngine.ParticleSystemModule.dll</HintPath>
+        </Reference>
     </ItemGroup>
 </Project>
