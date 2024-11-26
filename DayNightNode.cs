@@ -46,20 +46,18 @@ public class DayNightNode : Node
     [Label("夜？")]
     public bool IsNight() => !_isInDay;
 
-    [Trigger]
-    [Label("更新")]
-    public void Trigger()
+    private void Reset()
     {
         _date = default;
         Refresh();
-
-        if (this.Exit != null)
-        {
-            InvokeFlow(nameof(Exit));
-        }
     }
 
-    protected override void OnCreate() => Refresh();
+    protected override void OnCreate()
+    {
+        Watch(nameof(Latitude), () => Reset());
+        Watch(nameof(Longitude), () => Reset());
+        Refresh();
+    }
 
     public override void OnUpdate() => Refresh();
 
