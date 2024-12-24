@@ -21,7 +21,7 @@ using Warudo.Core.Graphs;
 )]
 class YouTubeStreamReceiverConsoleWatcherNode : Node
 {
-    private readonly Regex regex = new(@"^Error: undefined", RegexOptions.Multiline);
+    private readonly Regex regex = new(@"Error: undefined", RegexOptions.Multiline);
 
     private float nextTime;
     private string? consoleText;
@@ -176,30 +176,32 @@ class YouTubeStreamReceiverConsoleWatcherNode : Node
                 bufferHandle.Free();
             }
 
-            var sb = StringBuilderBuffer.Clear();
-            var addedCharIndex = 0;
-            var asciiCount = 0;
-            for (var i = 0; i < charsRead; i++)
-            {
-                var isAscii = buffer[i] <= 0x7E;
-                asciiCount += isAscii ? 1 : 2;
+            return new string(buffer, 0, charsRead);
+            
+            // var sb = StringBuilderBuffer.Clear();
+            // var addedCharIndex = 0;
+            // var asciiCount = 0;
+            // for (var i = 0; i < charsRead; i++)
+            // {
+            //     var isAscii = buffer[i] <= 0x7E;
+            //     asciiCount += isAscii ? 1 : 2;
 
-                if (asciiCount >= consoleScreenBufferInfo.dwSize.X)
-                {
-                    sb.Append(buffer, addedCharIndex, i + 1 - addedCharIndex);
-                    sb.AppendLine();
+            //     if (asciiCount >= consoleScreenBufferInfo.dwSize.X)
+            //     {
+            //         sb.Append(buffer, addedCharIndex, i + 1 - addedCharIndex);
+            //         sb.AppendLine();
 
-                    addedCharIndex = i + 1;
-                    asciiCount = 0;
-                }
-            }
+            //         addedCharIndex = i + 1;
+            //         asciiCount = 0;
+            //     }
+            // }
 
-            if (addedCharIndex < charsRead)
-            {
-                sb.Append(buffer, addedCharIndex, (int)charsRead - addedCharIndex);
-            }
+            // if (addedCharIndex < charsRead)
+            // {
+            //     sb.Append(buffer, addedCharIndex, (int)charsRead - addedCharIndex);
+            // }
 
-            return sb.ToString();
+            // return sb.ToString();
         }
 
         [DllImport("KERNEL32.dll", ExactSpelling = true, SetLastError = true)]
